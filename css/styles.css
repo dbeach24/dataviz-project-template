@@ -12,8 +12,13 @@ body {
   font-size: 14pt;
   font-family: sans-serif;
 }
+.colorlegendCells circle {
+  opacity: 0.5;
+}
+
 .sizelegendCells circle {
   fill: #5e5e5e;
+  opacity: 0.5;
 }
 
 .axis-label, .legend-label {

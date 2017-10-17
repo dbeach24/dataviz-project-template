@@ -24,7 +24,7 @@ colorInfo.scale
 
 const sizeInfo = {
   value: d => d.dead + d.missing,
-  label: 'Dead',
+  label: 'Dead/Missing',
   scale: d3.scaleSqrt().range([0, 30])
 };
 

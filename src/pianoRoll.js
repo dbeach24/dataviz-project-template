@@ -12,10 +12,10 @@ const colorLegend = d3.legendColor()
 
 const sizeLegend = d3.legendSize()
   .shape('circle')
-  .shapePadding(15)
+  .shapePadding(10)
   .classPrefix('size')
-  .cells([50, 100, 200, 400, 800])
-  .labels(['50', '100', '200', '400', '800']);
+  .cells([50, 100, 200, 400, 600])
+  .labels(['50', '100', '200', '400', '600']);
 
 export default function (svg, props) {
   const {
