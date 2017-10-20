@@ -1,33 +1,16 @@
-A template project that uses Webpack and D3. Designed as a starting point for interactive data visualization projects that require JavaScript code to be organized across many files (as ES6 modules).
+# Missing Migrants Visualization
 
-The starter code here is from [Stylized Scatter Plot with Color Legend](https://bl.ocks.org/curran/ecb09f2605c7fbbadf0eeb75da5f0a6b).
+## About the Data
 
-## Development
+This dataset is from the [Missing Migrants](https://www.kaggle.com/jmataya/missingmigrants) data uploaded to Kaggle, and contains information about people who have gone missing while travelling along migration routes.  This data originates from the [Missing Migrants Project](https://missingmigrants.iom.int/).
 
-This project uses NPM and Webpack. To get started, clone the repository and install dependencies like this:
+The map data used in the right-hand legend is taken from [Natural Earth](http://www.naturalearthdata.com/downloads/10m-physical-vectors), using the Land polygons dataset.  The shapefile was processed into sets of geodetic polygons
+for use in the visualization.
 
-```
-cd dataviz-project-template
-npm install
-```
+## Earlier work
 
-You'll need to build the JavaScript bundle using WebPack, using this command:
+An [earlier example of this work](http://blockbuilder.org/dbeach24/599725c960ce2881b1dcd46c3b20e268) can be found on [bl.ocks.org](https://bl.ocks.org).
 
-```
-npm run build
-```
+## Attribution
 
-To see the page run, you'll need to serve the site using a local HTTP server.
-
-```
-npm install -g http-server
-http-server
-```
-
-Now the site should be available at localhost:8080.
-
-For automatic refreshing during development, you can start the Webpack Dev Server like this:
-
-```
-npm run serve
-```
+This D3.js web project is based on [this template project](https://github.com/curran/dataviz-project-template) from [curran](https://github.com/curran).
