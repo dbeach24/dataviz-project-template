@@ -19,15 +19,11 @@ const sizeLegend = d3.legendSize()
   .cells([50, 100, 200, 400, 600])
   .labels(['50', '100', '200', '400', '600']);
 
-const zoomCatcher = svg.append("rect")
-  .attr("fill", "transparent")
-  .attr("stroke", "none");
-
 const zoom = d3.zoom()
   .scaleExtent([1, 20]);
 
 
-export default function (svg, props) {
+export default function (props) {
   const {
     data,
     xInfo,
@@ -47,17 +43,6 @@ export default function (svg, props) {
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
-  zoomCatcher
-    .attr('transform', `translate(${margin.left}, ${margin.top})`)
-    .attr('width', innerWidth)
-    .attr('height', innerHeight)
-    .call(zoom);
-
-  zoom
-    .extent([[0, 0], [innerWidth, innerHeight]])
-    .translateExtent([[0, 0], [innerWidth, innerHeight]])
-    .on("zoom", zoomed);
-
   xAxis.tickSize(-innerHeight);
   yAxis.tickSize(-innerWidth);
 
@@ -75,6 +60,9 @@ export default function (svg, props) {
   const yAxisGEnter = gEnter.append('g').attr('class', 'y-axis');
   const yAxisG = yAxisGEnter.merge(g.select('.y-axis'));
 
+  const marksGEnter = gEnter.append('g').attr('class', 'marksg');
+  const marksG = marksGEnter.merge(g.select('.marksg'));
+
   const colorLegendGEnter = gEnter.append('g').attr('class', 'color-legend');
   const colorLegendG = colorLegendGEnter
     .merge(g.select('.color-legend'))
@@ -84,6 +72,19 @@ export default function (svg, props) {
   const sizeLegendG = sizeLegendGEnter
     .merge(g.select('.size-legend'))
       .attr('transform', `translate(${innerWidth + 60}, 250)`);
+
+  const zoomCatcherGEnter = gEnter.append('rect').attr('class', 'zoom-catcher');
+  const zoomCatcher = zoomCatcherGEnter
+    .merge(g.select('.zoom-catcher'))
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+      .attr('width', innerWidth)
+      .attr('height', innerHeight)
+      .call(zoom);
+
+  zoom
+    .extent([[0, 0], [innerWidth, innerHeight]])
+    .translateExtent([[0, 0], [innerWidth, innerHeight]])
+    .on("zoom", zoomed);
 
   xAxisGEnter
     .append('text')
@@ -128,7 +129,7 @@ export default function (svg, props) {
 
   function updateMarkers(xScale, yScale) {
 
-    const circles = g.selectAll('.mark').data(data);
+    const circles = marksG.selectAll('.mark').data(data);
     circles
       .enter().append('circle')
         .attr('class', 'mark')

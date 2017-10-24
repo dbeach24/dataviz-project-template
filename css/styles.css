@@ -27,6 +27,11 @@ body {
   font-family: sans-serif;
 }
 
+.zoom-catcher {
+  fill: transparent;
+  stroke: none;
+}
+
 /* Make the chart container fill the page using CSS. */
 #visualization {
   position: fixed;

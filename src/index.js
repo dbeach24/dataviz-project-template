@@ -77,7 +77,7 @@ d3.csv('data/clean/migrants.csv', row, data => {
       .attr('height', visualizationDiv.clientHeight);
 
     // Render the scatter plot.
-    scatterPlot(svg, {
+    scatterPlot({
       data, xInfo, yInfo, colorInfo, sizeInfo,
       margin
     });
