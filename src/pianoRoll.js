@@ -1,4 +1,6 @@
 
+const svg = d3.select("svg");
+
 const xAxis = d3.axisBottom()
    .ticks(0);
 
@@ -16,6 +18,14 @@ const sizeLegend = d3.legendSize()
   .classPrefix('size')
   .cells([50, 100, 200, 400, 600])
   .labels(['50', '100', '200', '400', '600']);
+
+const zoomCatcher = svg.append("rect")
+  .attr("fill", "transparent")
+  .attr("stroke", "none");
+
+const zoom = d3.zoom()
+  .scaleExtent([1, 20]);
+
 
 export default function (svg, props) {
   const {
@@ -36,6 +46,17 @@ export default function (svg, props) {
   const height = svg.attr('height');
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
+
+  zoomCatcher
+    .attr('transform', `translate(${margin.left}, ${margin.top})`)
+    .attr('width', innerWidth)
+    .attr('height', innerHeight)
+    .call(zoom);
+
+  zoom
+    .extent([[0, 0], [innerWidth, innerHeight]])
+    .translateExtent([[0, 0], [innerWidth, innerHeight]])
+    .on("zoom", zoomed);
 
   xAxis.tickSize(-innerHeight);
   yAxis.tickSize(-innerWidth);
@@ -105,16 +126,22 @@ export default function (svg, props) {
     .range([innerHeight, 0])
     .nice();
 
-  const circles = g.selectAll('.mark').data(data);
-  circles
-    .enter().append('circle')
-      .attr('class', 'mark')
-      .attr('fill-opacity', 0.5)
-    .merge(circles)
-      .attr('cx', d => xInfo.scale(xInfo.value(d)))
-      .attr('cy', d => yInfo.scale(yInfo.value(d)))
-      .attr('fill', d => colorInfo.scale(colorInfo.value(d)))
-      .attr('r', d => sizeInfo.scale(sizeInfo.value(d)));
+  function updateMarkers(xScale, yScale) {
+
+    const circles = g.selectAll('.mark').data(data);
+    circles
+      .enter().append('circle')
+        .attr('class', 'mark')
+        .attr('fill-opacity', 0.5)
+      .merge(circles)
+        .attr('cx', d => xScale(xInfo.value(d)))
+        .attr('cy', d => yScale(yInfo.value(d)))
+        .attr('fill', d => colorInfo.scale(colorInfo.value(d)))
+        .attr('r', d => sizeInfo.scale(sizeInfo.value(d)));
+
+  }
+
+  updateMarkers(xInfo.scale, yInfo.scale);
 
   xAxisG.call(xAxis);
   yAxisG.call(yAxis);
@@ -124,4 +151,16 @@ export default function (svg, props) {
   sizeLegendG.call(sizeLegend)
     .selectAll('.cell text')
       .attr('dy', '0.05em');
+
+
+  function zoomed() {
+    const t = d3.event.transform;
+    //const zoomXscale = t.rescaleX(xInfo.scale);
+    const zoomYscale = t.rescaleY(yInfo.scale);
+    
+    //xAxisG.call(xAxis.scale(zoomXscale));
+    yAxisG.call(yAxis.scale(zoomYscale));
+    updateMarkers(xInfo.scale, zoomYscale);
+  }
+
 }
