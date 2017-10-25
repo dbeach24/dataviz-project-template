@@ -70,6 +70,8 @@
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pianoRoll__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__streamGraph__ = __webpack_require__(2);
+
 
 
 const xInfo = {
@@ -81,6 +83,11 @@ const xInfo = {
 const yInfo = {
   value: d => d.date,
   scale: d3.scaleTime(),
+  label: ''
+};
+
+const widthInfo = {
+  scale: d3.scaleLinear().domain([0,1200]).range([0, 200]),
   label: ''
 };
 
@@ -141,6 +148,7 @@ d3.csv('data/clean/migrants.csv', row, data => {
   yInfo.scale.domain(d3.extent(data, yInfo.value));
   sizeInfo.scale.domain(d3.extent(data, sizeInfo.value));
 
+
   const render = () => {
 
     // Extract the width and height that was computed by CSS.
@@ -149,10 +157,15 @@ d3.csv('data/clean/migrants.csv', row, data => {
       .attr('height', visualizationDiv.clientHeight);
 
     // Render the scatter plot.
-    Object(__WEBPACK_IMPORTED_MODULE_0__pianoRoll__["a" /* default */])(svg, {
+    Object(__WEBPACK_IMPORTED_MODULE_0__pianoRoll__["a" /* default */])({
       data, xInfo, yInfo, colorInfo, sizeInfo,
       margin
     });
+
+    Object(__WEBPACK_IMPORTED_MODULE_1__streamGraph__["a" /* default */])({
+      data, yInfo, colorInfo, widthInfo, margin
+    });
+
   }
 
   // Draw for the first time to initialize.
@@ -189,15 +202,10 @@ const sizeLegend = d3.legendSize()
   .cells([50, 100, 200, 400, 600])
   .labels(['50', '100', '200', '400', '600']);
 
-const zoomCatcher = svg.append("rect")
-  .attr("fill", "transparent")
-  .attr("stroke", "none");
-
 const zoom = d3.zoom()
   .scaleExtent([1, 20]);
 
-
-/* harmony default export */ __webpack_exports__["a"] = (function (svg, props) {
+/* harmony default export */ __webpack_exports__["a"] = (function (props) {
   const {
     data,
     xInfo,
@@ -217,21 +225,11 @@ const zoom = d3.zoom()
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
-  zoomCatcher
-    .attr('transform', `translate(${margin.left}, ${margin.top})`)
-    .attr('width', innerWidth)
-    .attr('height', innerHeight)
-    .call(zoom);
-
-  zoom
-    .extent([[0, 0], [innerWidth, innerHeight]])
-    .translateExtent([[0, 0], [innerWidth, innerHeight]])
-    .on("zoom", zoomed);
-
   xAxis.tickSize(-innerHeight);
   yAxis.tickSize(-innerWidth);
 
   let g = svg.selectAll('.container').data([null]);
+
   const gEnter = g.enter().append('g').attr('class', 'container');
   g = gEnter
     .merge(g)
@@ -245,6 +243,9 @@ const zoom = d3.zoom()
   const yAxisGEnter = gEnter.append('g').attr('class', 'y-axis');
   const yAxisG = yAxisGEnter.merge(g.select('.y-axis'));
 
+  const marksGEnter = gEnter.append('g').attr('class', 'marksg');
+  const marksG = marksGEnter.merge(g.select('.marksg'));
+
   const colorLegendGEnter = gEnter.append('g').attr('class', 'color-legend');
   const colorLegendG = colorLegendGEnter
     .merge(g.select('.color-legend'))
@@ -254,6 +255,19 @@ const zoom = d3.zoom()
   const sizeLegendG = sizeLegendGEnter
     .merge(g.select('.size-legend'))
       .attr('transform', `translate(${innerWidth + 60}, 250)`);
+
+  const zoomCatcherGEnter = gEnter.append('rect').attr('class', 'zoom-catcher');
+  const zoomCatcher = zoomCatcherGEnter
+    .merge(g.select('.zoom-catcher'))
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+      .attr('width', innerWidth)
+      .attr('height', innerHeight)
+      .call(zoom);
+
+  zoom
+    .extent([[0, 0], [innerWidth, innerHeight]])
+    .translateExtent([[0, 0], [innerWidth, innerHeight]])
+    .on("zoom", zoomed);
 
   xAxisGEnter
     .append('text')
@@ -298,7 +312,7 @@ const zoom = d3.zoom()
 
   function updateMarkers(xScale, yScale) {
 
-    const circles = g.selectAll('.mark').data(data);
+    const circles = marksG.selectAll('.mark').data(data);
     circles
       .enter().append('circle')
         .attr('class', 'mark')
@@ -334,6 +348,98 @@ const zoom = d3.zoom()
   }
 
 });
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+const startDate = new Date(2014, 0, 1);
+const endDate = new Date(2017, 6, 1);
+
+function dateidx(date) {
+	return date.getYear() * 12 + date.getMonth();
+}
+
+function getDates() {
+  var date = new Date(startDate);
+  date.setDate(15);
+  var result = [];
+  var i = 0;
+  while(date < endDate) {
+    result[i++] = new Date(date);
+    date.setMonth(date.getMonth() + 1);
+  }
+  return result;
+}
+
+function getCounts(data, layers) {
+  var items = getDates().map(d => {
+    var item = {date: d};
+    layers.forEach(l => {item[l] = 0});
+    return item;
+  });
+  var itemMap = {};
+  items.forEach(item => {itemMap[dateidx(item.date)] = item});
+  data
+    .filter(d => d.date != null)
+    .forEach(d => {
+      var item = itemMap[dateidx(d.date)];
+      if(!item) { return; }
+      const ncauses = d.causes.length;
+	  const value = (d.dead + d.missing) / ncauses;
+	  d.causes.forEach(c => (item[c] += value));
+  });
+  return items;
+}
+
+const svg = d3.select("svg");
+
+const streamG = svg.append("g");
+
+/* harmony default export */ __webpack_exports__["a"] = (function (props) {
+  const {
+    data,
+    yInfo,
+    colorInfo,
+    widthInfo,
+    margin
+  } = props;
+
+  var layers = colorInfo.scale.domain();
+  console.info(layers);
+
+  var counts = getCounts(data, layers);
+
+  var stack = d3.stack()
+    .keys(layers)
+    .offset(d3.stackOffsetWiggle);
+
+  var layers0 = stack(counts);
+
+  var area = d3.area()
+    .y(d => yInfo.scale(d.data.date))
+    .x0(d => widthInfo.scale(d[0]))
+    .x1(d => widthInfo.scale(d[1]))
+    .curve(d3.curveBasis);
+
+  streamG.attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+  streamG.selectAll('path')
+    .data(layers0)
+    .enter()
+      .append('path')
+      .attr('d', area)
+      .attr('fill', (d, i) => colorInfo.scale(layers[i]))
+      .attr('stroke', 'white')
+      .attr('opacity', 0.75);
+
+
+
+});
+
 
 
 /***/ })
