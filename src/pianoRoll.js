@@ -22,7 +22,6 @@ const sizeLegend = d3.legendSize()
 const zoom = d3.zoom()
   .scaleExtent([1, 20]);
 
-
 export default function (props) {
   const {
     data,
@@ -47,6 +46,7 @@ export default function (props) {
   yAxis.tickSize(-innerWidth);
 
   let g = svg.selectAll('.container').data([null]);
+
   const gEnter = g.enter().append('g').attr('class', 'container');
   g = gEnter
     .merge(g)

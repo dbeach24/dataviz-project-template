@@ -1,4 +1,5 @@
 import scatterPlot from './pianoRoll'
+import streamGraph from './streamGraph'
 
 const xInfo = {
   value: d => d.lon,
@@ -9,6 +10,11 @@ const xInfo = {
 const yInfo = {
   value: d => d.date,
   scale: d3.scaleTime(),
+  label: ''
+};
+
+const widthInfo = {
+  scale: d3.scaleLinear().domain([0,1200]).range([0, 200]),
   label: ''
 };
 
@@ -69,6 +75,7 @@ d3.csv('data/clean/migrants.csv', row, data => {
   yInfo.scale.domain(d3.extent(data, yInfo.value));
   sizeInfo.scale.domain(d3.extent(data, sizeInfo.value));
 
+
   const render = () => {
 
     // Extract the width and height that was computed by CSS.
@@ -81,6 +88,11 @@ d3.csv('data/clean/migrants.csv', row, data => {
       data, xInfo, yInfo, colorInfo, sizeInfo,
       margin
     });
+
+    streamGraph({
+      data, yInfo, colorInfo, widthInfo, margin
+    });
+
   }
 
   // Draw for the first time to initialize.
