@@ -1,3 +1,4 @@
+import {markerInfo} from './markers'
 
 const svg = d3.select("svg");
 
@@ -8,9 +9,39 @@ const yAxis = d3.axisLeft()
   .ticks(5)
   .tickPadding(15);
 
-const colorLegend = d3.legendColor()
-  .classPrefix('color')
-  .shape('circle');
+// const colorLegend = d3.legendColor()
+//   .classPrefix('color')
+//   .shape('circle');
+
+const colorLegendG = svg.append("g");
+
+function drawColorLegend() {
+  const g = colorLegendG;
+
+  const s = 50;
+  const x = 0;
+  const tx = s/2 + 10;
+  var y0 = s/2 + 25;
+  const ypad = 5;
+  const y = i => (y0 + i*(s+ypad));
+
+  g.append('text')  
+    .attr('x', -s/2)
+    .attr('y', 20)
+    .text("Cause")
+    .attr('class', 'legend-label');
+
+  for(var i in markerInfo) {
+    var info = markerInfo[i];
+    info.marker(g, x, y(i), s).attr('opacity', 0.75);
+    g.append('text')
+        .attr('x', tx)
+        .attr('y', y(i) + 10)
+        .text(info.label)
+        .attr('class', 'legend-value');
+  }
+
+}
 
 const sizeLegend = d3.legendSize()
   .shape('circle')
@@ -21,6 +52,7 @@ const sizeLegend = d3.legendSize()
 
 export default function (data, vis, margin) {
 
+
   const xInfo = vis.longitude;
   const yInfo = vis.time;
   const colorInfo = vis.causeColor;
@@ -29,7 +61,6 @@ export default function (data, vis, margin) {
 
   xAxis.scale(xInfo.scale);
   yAxis.scale(yInfo.scale);
-  colorLegend.scale(colorInfo.scale);
   sizeLegend.scale(sizeInfo.scale);
 
   const width = svg.attr('width');
@@ -58,15 +89,18 @@ export default function (data, vis, margin) {
   const marksGEnter = gEnter.append('g').attr('class', 'marksg');
   const marksG = marksGEnter.merge(g.select('.marksg'));
 
-  const colorLegendGEnter = gEnter.append('g').attr('class', 'color-legend');
-  const colorLegendG = colorLegendGEnter
-    .merge(g.select('.color-legend'))
-      .attr('transform', `translate(${innerWidth + 60}, 50)`);
+  // const colorLegendGEnter = gEnter.append('g').attr('class', 'color-legend');
+  // const colorLegendG = colorLegendGEnter
+  //   .merge(g.select('.color-legend'))
+  //     .attr('transform', `translate(${innerWidth + 60}, 50)`);
+
+  colorLegendG.attr('transform', `translate(${margin.left + innerWidth + 60}, 50)`);
+  drawColorLegend();
 
   const sizeLegendGEnter = gEnter.append('g').attr('class', 'size-legend');
   const sizeLegendG = sizeLegendGEnter
     .merge(g.select('.size-legend'))
-      .attr('transform', `translate(${innerWidth + 60}, 250)`);
+      .attr('transform', `translate(${innerWidth + 60}, 450)`);
 
   const zoomCatcherGEnter = gEnter.append('rect').attr('class', 'zoom-catcher');
   const zoomCatcher = zoomCatcherGEnter
@@ -93,13 +127,13 @@ export default function (data, vis, margin) {
       .attr('transform', `rotate(-90)`)
       .text(vis.time.label);
 
-  colorLegendGEnter
-    .append('text')
-      .attr('class', 'legend-label')
-      .attr('x', -30)
-      .attr('y', -20)
-    .merge(colorLegendG.select('legend-label'))
-      .text(vis.causeColor.label);
+  // colorLegendGEnter
+  //   .append('text')
+  //     .attr('class', 'legend-label')
+  //     .attr('x', -30)
+  //     .attr('y', -20)
+  //   .merge(colorLegendG.select('legend-label'))
+  //     .text(vis.causeColor.label);
 
   sizeLegendGEnter
     .append('text')
@@ -131,7 +165,7 @@ export default function (data, vis, margin) {
       .merge(circles)
         .attr('cx', d => xScale(xInfo.value(d)))
         .attr('cy', d => yScale(yInfo.value(d)))
-        .attr('fill', d => colorInfo.scale(colorInfo.value(d)))
+        .attr('class', d => `mark ${colorInfo.scale(colorInfo.value(d))}`)
         .attr('r', d => sizeInfo.scale(sizeInfo.value(d)));
   }
 
@@ -139,9 +173,9 @@ export default function (data, vis, margin) {
 
   vis.updatePianoRoll = updatePianoRoll;
 
-  colorLegendG.call(colorLegend)
-    .selectAll('.cell text')
-      .attr('dy', '0.05em');
+  // colorLegendG.call(colorLegend)
+  //   .selectAll('.cell text')
+  //     .attr('dy', '0.05em');
   sizeLegendG.call(sizeLegend)
     .selectAll('.cell text')
       .attr('dy', '0.05em');

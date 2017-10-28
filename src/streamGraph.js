@@ -79,7 +79,7 @@ export default function (data, vis, margin) {
       .enter()
         .append('path')
         .attr('d', area)
-        .attr('fill', (d, i) => colorInfo.scale(layers[i]))
+        .attr('class', (d, i) => colorInfo.scale(layers[i]))
         .attr('stroke', 'white')
         .attr('opacity', 0.75);
 

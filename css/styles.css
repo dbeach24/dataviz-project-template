@@ -27,6 +27,12 @@ body {
   font-family: sans-serif;
 }
 
+.legend-value {
+  fill: #8E8883;
+  font-size: 12pt;
+  font-family: sans-serif;
+}
+
 .zoom-catcher {
   fill: transparent;
   stroke: none;
@@ -40,3 +46,10 @@ body {
   top: 0px;
   bottom: 0px;
 }
+
+.drowning { fill: #60B0FF; }
+.exposure { fill: #FFA030; }
+.mechanical { fill: #404040; } 
+.violence { fill: #A00000; } 
+.medical { fill: #609000; }
+.unknown { fill: #FFA0C0; } /*#d8c6ff*/

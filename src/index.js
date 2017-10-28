@@ -24,7 +24,7 @@ const causeColorInfo = {
   value: d => d.causes[0],
   scale: d3.scaleOrdinal()
     .domain(['Drowning/Asphyxiation', 'Exposure', 'Vehicular/Mechanical', 'Violence/Homicide', 'Medical/Illness', 'Unknown'])
-    .range(['#60B0FF', '#ff8c0a', '#5e5e5e', '#cc0000', '#81c100', '#d8c6ff']),
+    .range(['drowning', 'exposure', 'mechanical', 'violence', 'medical', 'unknown']),
   label: 'Cause'
 };
 
@@ -48,7 +48,7 @@ const vis = {
   countSummary: countSummaryInfo
 };
 
-const pianoMargin = { left: 260, right: 300, top: 20, bottom: 120 };
+const pianoMargin = { left: 260, right: 230, top: 20, bottom: 120 };
 const streamMargin = { left: 100, top: 20, bottom: 120 };
 
 const visualization = d3.select('#visualization');
