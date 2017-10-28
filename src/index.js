@@ -1,40 +1,55 @@
 import scatterPlot from './pianoRoll'
 import streamGraph from './streamGraph'
 
-const xInfo = {
+const longitudeInfo = {
   value: d => d.lon,
-  scale: d3.scaleLinear(),
+  scale: d3.scaleLinear().domain([-130, 130]),
   label: ''
 };
 
-const yInfo = {
+const timeInfo = {
+  value: d => d.date,
+  scale: d3.scaleTime(),
+  label: '',
+  zoom: d3.zoom().scaleExtent([1, 20])
+};
+
+const timeFixedInfo = {
   value: d => d.date,
   scale: d3.scaleTime(),
   label: ''
 };
 
-const widthInfo = {
-  scale: d3.scaleLinear().domain([0,1200]).range([0, 200]),
-  label: ''
-};
-
-const colorInfo = {
+const causeColorInfo = {
   value: d => d.causes[0],
-  scale: d3.scaleOrdinal(),
+  scale: d3.scaleOrdinal()
+    .domain(['Drowning/Asphyxiation', 'Exposure', 'Vehicular/Mechanical', 'Violence/Homicide', 'Medical/Illness', 'Unknown'])
+    .range(['#60B0FF', '#ff8c0a', '#5e5e5e', '#cc0000', '#81c100', '#d8c6ff']),
   label: 'Cause'
 };
 
-colorInfo.scale
-  .domain(['Drowning/Asphyxiation', 'Exposure', 'Vehicular/Mechanical', 'Violence/Homicide', 'Medical/Illness', 'Unknown'])
-  .range(['#60B0FF', '#ff8c0a', '#5e5e5e', '#cc0000', '#81c100', '#d8c6ff']);
-
-const sizeInfo = {
+const countSizeInfo = {
   value: d => d.dead + d.missing,
   label: 'Dead/Missing',
   scale: d3.scaleSqrt().range([0, 30])
 };
 
-const margin = { left: 120, right: 300, top: 20, bottom: 120 };
+const countSummaryInfo = {
+  scale: d3.scaleLinear().domain([0,1500]).range([0, 150]),
+  label: ''
+};
+
+const vis = {
+  longitude: longitudeInfo,
+  time: timeInfo,
+  timeFixed: timeFixedInfo,
+  countSize: countSizeInfo,
+  causeColor: causeColorInfo,
+  countSummary: countSummaryInfo
+};
+
+const pianoMargin = { left: 260, right: 300, top: 20, bottom: 120 };
+const streamMargin = { left: 100, top: 20, bottom: 120 };
 
 const visualization = d3.select('#visualization');
 const visualizationDiv = visualization.node();
@@ -70,11 +85,9 @@ function row(d) {
 
 d3.csv('data/clean/migrants.csv', row, data => {
 
-  xInfo.scale.domain([-150, 150]);
-  //xInfo.scale.domain(d3.extent(data, xInfo.value));
-  yInfo.scale.domain(d3.extent(data, yInfo.value));
-  sizeInfo.scale.domain(d3.extent(data, sizeInfo.value));
-
+  vis.time.scale.domain(d3.extent(data, vis.time.value));
+  vis.timeFixed.scale.domain(d3.extent(data, vis.timeFixed.value));
+  vis.countSize.scale.domain(d3.extent(data, vis.countSize.value));
 
   const render = () => {
 
@@ -84,14 +97,8 @@ d3.csv('data/clean/migrants.csv', row, data => {
       .attr('height', visualizationDiv.clientHeight);
 
     // Render the scatter plot.
-    scatterPlot({
-      data, xInfo, yInfo, colorInfo, sizeInfo,
-      margin
-    });
-
-    streamGraph({
-      data, yInfo, colorInfo, widthInfo, margin
-    });
+    scatterPlot(data, vis, pianoMargin);
+    streamGraph(data, vis, streamMargin);
 
   }
 

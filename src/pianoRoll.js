@@ -2,7 +2,7 @@
 const svg = d3.select("svg");
 
 const xAxis = d3.axisBottom()
-   .ticks(0);
+  .ticks(0);
 
 const yAxis = d3.axisLeft()
   .ticks(5)
@@ -19,18 +19,13 @@ const sizeLegend = d3.legendSize()
   .cells([50, 100, 200, 400, 600])
   .labels(['50', '100', '200', '400', '600']);
 
-const zoom = d3.zoom()
-  .scaleExtent([1, 20]);
+export default function (data, vis, margin) {
 
-export default function (props) {
-  const {
-    data,
-    xInfo,
-    yInfo,
-    colorInfo,
-    sizeInfo,
-    margin
-  } = props;
+  const xInfo = vis.longitude;
+  const yInfo = vis.time;
+  const colorInfo = vis.causeColor;
+  const sizeInfo = vis.countSize;
+  const zoom = yInfo.zoom;
 
   xAxis.scale(xInfo.scale);
   yAxis.scale(yInfo.scale);
@@ -76,15 +71,9 @@ export default function (props) {
   const zoomCatcherGEnter = gEnter.append('rect').attr('class', 'zoom-catcher');
   const zoomCatcher = zoomCatcherGEnter
     .merge(g.select('.zoom-catcher'))
-      .attr('transform', `translate(${margin.left}, ${margin.top})`)
       .attr('width', innerWidth)
       .attr('height', innerHeight)
-      .call(zoom);
-
-  zoom
-    .extent([[0, 0], [innerWidth, innerHeight]])
-    .translateExtent([[0, 0], [innerWidth, innerHeight]])
-    .on("zoom", zoomed);
+      .call(vis.time.zoom);
 
   xAxisGEnter
     .append('text')
@@ -102,7 +91,7 @@ export default function (props) {
     .merge(yAxisG.select('.axis-label'))
       .attr('x', -innerHeight / 2)
       .attr('transform', `rotate(-90)`)
-      .text(yInfo.label);
+      .text(vis.time.label);
 
   colorLegendGEnter
     .append('text')
@@ -110,7 +99,7 @@ export default function (props) {
       .attr('x', -30)
       .attr('y', -20)
     .merge(colorLegendG.select('legend-label'))
-      .text(colorInfo.label);
+      .text(vis.causeColor.label);
 
   sizeLegendGEnter
     .append('text')
@@ -118,7 +107,7 @@ export default function (props) {
       .attr('x', -30)
       .attr('y', -20)
     .merge(sizeLegendG.select('legend-label'))
-      .text(sizeInfo.label);
+      .text(vis.countSize.label);
 
   xInfo.scale
     .range([0, innerWidth]);
@@ -127,7 +116,12 @@ export default function (props) {
     .range([innerHeight, 0])
     .nice();
 
-  function updateMarkers(xScale, yScale) {
+  function updatePianoRoll() {
+
+    const xScale = xInfo.scale;
+    const yScale = yInfo.scale;
+
+    yAxisG.call(yAxis);
 
     const circles = marksG.selectAll('.mark').data(data);
     circles
@@ -139,29 +133,17 @@ export default function (props) {
         .attr('cy', d => yScale(yInfo.value(d)))
         .attr('fill', d => colorInfo.scale(colorInfo.value(d)))
         .attr('r', d => sizeInfo.scale(sizeInfo.value(d)));
-
   }
 
-  updateMarkers(xInfo.scale, yInfo.scale);
+  updatePianoRoll();
 
-  xAxisG.call(xAxis);
-  yAxisG.call(yAxis);
+  vis.updatePianoRoll = updatePianoRoll;
+
   colorLegendG.call(colorLegend)
     .selectAll('.cell text')
       .attr('dy', '0.05em');
   sizeLegendG.call(sizeLegend)
     .selectAll('.cell text')
       .attr('dy', '0.05em');
-
-
-  function zoomed() {
-    const t = d3.event.transform;
-    //const zoomXscale = t.rescaleX(xInfo.scale);
-    const zoomYscale = t.rescaleY(yInfo.scale);
-    
-    //xAxisG.call(xAxis.scale(zoomXscale));
-    yAxisG.call(yAxis.scale(zoomYscale));
-    updateMarkers(xInfo.scale, zoomYscale);
-  }
 
 }
