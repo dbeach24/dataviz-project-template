@@ -116,7 +116,7 @@ export default function (data, vis, margin) {
     .range([innerHeight, 0])
     .nice();
 
-  function updateView() {
+  function updatePianoRoll() {
 
     const xScale = xInfo.scale;
     const yScale = yInfo.scale;
@@ -135,9 +135,9 @@ export default function (data, vis, margin) {
         .attr('r', d => sizeInfo.scale(sizeInfo.value(d)));
   }
 
-  updateView();
+  updatePianoRoll();
 
-  vis.updatePiano = updateView;
+  vis.updatePianoRoll = updatePianoRoll;
 
   colorLegendG.call(colorLegend)
     .selectAll('.cell text')

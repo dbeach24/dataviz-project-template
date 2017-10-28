@@ -72,14 +72,21 @@ export default function (data, vis, margin) {
 
   streamG.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-  dataG.selectAll('path')
-    .data(stack(counts))
-    .enter()
-      .append('path')
-      .attr('d', area)
-      .attr('fill', (d, i) => colorInfo.scale(layers[i]))
-      .attr('stroke', 'white')
-      .attr('opacity', 0.75);
+  function updateStream() {
+
+    dataG.selectAll('path')
+      .data(stack(counts))
+      .enter()
+        .append('path')
+        .attr('d', area)
+        .attr('fill', (d, i) => colorInfo.scale(layers[i]))
+        .attr('stroke', 'white')
+        .attr('opacity', 0.75);
+
+  }
+
+  updateStream();
+  vis.updateStream = updateStream;
 
   brush
     .extent([
@@ -117,7 +124,7 @@ export default function (data, vis, margin) {
         .translate(0, -s[0])
     );
 
-    vis.updatePiano();
+    vis.updatePianoRoll();
   }
 
  function zoomed() {
@@ -129,7 +136,7 @@ export default function (data, vis, margin) {
     vis.time.scale.domain(t.rescaleY(vis.timeFixed.scale).domain());
     var [ya, yb] = vis.time.scale.range().map(t.invertY, t);
     brushG.call(brush.move, [yb, ya]);
-    vis.updatePiano();
+    vis.updatePianoRoll();
   }
 
 }
