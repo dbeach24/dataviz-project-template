@@ -64,6 +64,7 @@ legend-icon {
 
 .highlight {
   opacity: 1.0;
+  stroke: black;
 }
 
 .greyout {
