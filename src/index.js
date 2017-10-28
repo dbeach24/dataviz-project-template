@@ -24,7 +24,7 @@ const causeColorInfo = {
   value: d => d.causes[0],
   scale: d3.scaleOrdinal()
     .domain(['Drowning/Asphyxiation', 'Exposure', 'Vehicular/Mechanical', 'Violence/Homicide', 'Medical/Illness', 'Unknown'])
-    .range(['drowning', 'exposure', 'mechanical', 'violence', 'medical', 'unknown']),
+    .range(['drowning', 'exposure', 'vehicular', 'violence', 'medical', 'unknown']),
   label: 'Cause'
 };
 

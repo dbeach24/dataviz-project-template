@@ -80,6 +80,7 @@ export default function (data, vis, margin) {
         .append('path')
         .attr('d', area)
         .attr('class', (d, i) => colorInfo.scale(layers[i]))
+        .classed('highlightable', true)
         .attr('stroke', 'white')
         .attr('opacity', 0.75);
 

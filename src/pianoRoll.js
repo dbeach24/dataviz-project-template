@@ -33,15 +33,52 @@ function drawColorLegend() {
 
   for(var i in markerInfo) {
     var info = markerInfo[i];
-    info.marker(g, x, y(i), s).attr('opacity', 0.75);
+
+    var bgarea = g.append('rect')
+        .attr('x', -s/2)
+        .attr('y', y(i) - s/2 - 5)
+        .attr('width', 150)
+        .attr('height', s + 10)
+        .attr('opacity', 0.0);
+
+    var marker = info.marker(g, x, y(i), s)
+        .classed('legend-icon', true)
+        .classed('highlightable', true);
     g.append('text')
         .attr('x', tx)
         .attr('y', y(i) + 10)
         .text(info.label)
-        .attr('class', 'legend-value');
+        .classed('legend-value', true)
+        .classed(info.class, true);
+
+    var hoverarea = g.append('rect')
+        .attr('x', -s/2)
+        .attr('y', y(i) - s/2 - 5)
+        .attr('width', 150)
+        .attr('height', s + 10)
+        .attr('opacity', 0.0);
+
+    addMarkerBehavior(hoverarea, info, bgarea);
+
   }
 
 }
+
+function addMarkerBehavior(marker, info, bgarea) {
+  marker
+      .on("mouseover", () => {
+        bgarea.attr('fill', '#E0E0E0').attr('opacity', 1.0);
+        svg.selectAll("." + info.class).classed("highlight", true)
+        svg.selectAll(`.highlightable:not(.${info.class})`).classed("greyout", true)
+      })
+      .on("mouseout", () => {
+        bgarea.attr('fill', null).attr('opacity', 0.0);
+        svg.selectAll("." + info.class).classed("highlight", false)
+        svg.selectAll(`.highlightable:not(.${info.class})`).classed("greyout", false)
+      })
+      ;
+}
+
 
 const sizeLegend = d3.legendSize()
   .shape('circle')
@@ -160,12 +197,12 @@ export default function (data, vis, margin) {
     const circles = marksG.selectAll('.mark').data(data);
     circles
       .enter().append('circle')
-        .attr('class', 'mark')
-        .attr('fill-opacity', 0.5)
+        .classed('mark', true)
+        .classed('highlightable', true)
       .merge(circles)
         .attr('cx', d => xScale(xInfo.value(d)))
         .attr('cy', d => yScale(yInfo.value(d)))
-        .attr('class', d => `mark ${colorInfo.scale(colorInfo.value(d))}`)
+        .attr('class', d => `mark highlightable ${colorInfo.scale(colorInfo.value(d))}`)
         .attr('r', d => sizeInfo.scale(sizeInfo.value(d)));
   }
 

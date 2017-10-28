@@ -83,7 +83,7 @@ export function exposure(parent, cx, cy, s) {
 
 export function vehicular(parent, cx, cy, s) {
   const myscale = 120;
-  var g = newg(parent, cx-s/2, cy-s/2, s/myscale).attr('class', 'mechanical');
+  var g = newg(parent, cx-s/2, cy-s/2, s/myscale).attr('class', 'vehicular');
   g.append('rect')
       .attr('x', 0).attr('y', 20).attr('width', 80).attr('height', 50);
 	g.append('path').attr('d', `
