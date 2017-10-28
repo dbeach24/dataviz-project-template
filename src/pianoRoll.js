@@ -73,12 +73,7 @@ export default function (data, vis, margin) {
     .merge(g.select('.zoom-catcher'))
       .attr('width', innerWidth)
       .attr('height', innerHeight)
-      .call(zoom);
-
-  zoom
-    .extent([[0, 0], [innerWidth, innerHeight]])
-    .translateExtent([[0, 0], [innerWidth, innerHeight]])
-    .on("zoom", zoomed);
+      .call(vis.time.zoom);
 
   xAxisGEnter
     .append('text')
@@ -121,7 +116,12 @@ export default function (data, vis, margin) {
     .range([innerHeight, 0])
     .nice();
 
-  function updateMarkers(xScale, yScale) {
+  function updateView() {
+
+    const xScale = xInfo.scale;
+    const yScale = yInfo.scale;
+
+    yAxisG.call(yAxis);
 
     const circles = marksG.selectAll('.mark').data(data);
     circles
@@ -133,29 +133,17 @@ export default function (data, vis, margin) {
         .attr('cy', d => yScale(yInfo.value(d)))
         .attr('fill', d => colorInfo.scale(colorInfo.value(d)))
         .attr('r', d => sizeInfo.scale(sizeInfo.value(d)));
-
   }
 
-  updateMarkers(xInfo.scale, yInfo.scale);
+  updateView();
 
-  xAxisG.call(xAxis);
-  yAxisG.call(yAxis);
+  vis.updatePiano = updateView;
+
   colorLegendG.call(colorLegend)
     .selectAll('.cell text')
       .attr('dy', '0.05em');
   sizeLegendG.call(sizeLegend)
     .selectAll('.cell text')
       .attr('dy', '0.05em');
-
-
-  function zoomed() {
-    const t = d3.event.transform;
-    //const zoomXscale = t.rescaleX(xInfo.scale);
-    const zoomYscale = t.rescaleY(yInfo.scale);
-    
-    //xAxisG.call(xAxis.scale(zoomXscale));
-    yAxisG.call(yAxis.scale(zoomYscale));
-    updateMarkers(xInfo.scale, zoomYscale);
-  }
 
 }

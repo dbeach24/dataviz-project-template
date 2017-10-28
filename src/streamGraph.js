@@ -90,6 +90,14 @@ export default function (data, vis, margin) {
 
   brushG.call(brush);
 
+  const zoom = vis.time.zoom;
+
+  zoom
+    .extent([[0, 0], [0, innerHeight]])
+    .translateExtent([[0, 0], [0, innerHeight]])
+    .on("zoom", zoomed);
+
+
   function brushed() {
 
     // ignore brush-by-zoom
@@ -98,8 +106,6 @@ export default function (data, vis, margin) {
     const y = vis.time.scale;
     const y2 = vis.timeFixed.scale;
     const s = d3.event.selection || y2.range();
-
-    const zoom = vis.time.zoom;
 
     var [ya, yb] = s.map(y2.invert, y2);
 
@@ -110,18 +116,21 @@ export default function (data, vis, margin) {
         .scale(innerHeight / (s[1] - s[0]))
         .translate(0, -s[0])
     );
+
+    vis.updatePiano();
   }
 
-  // function zoomed() {
+ function zoomed() {
+    // ignore zoom-by-brush
+    if(d3.event.sourceEvent && d3.event.sourceEvent.type == "brush") return;
+    const t = d3.event.transform;
+    const zoomYscale = t.rescaleY(yInfo.scale);
 
-  //   // ignore zoom-by-brush
-  //   if(d3.event.sourceEvent && d3.event.sourceEvent.type == "brush") return;
-
-  //   const t = d3.event.transform;
-  //   y.domain(t.rescaleY(y2).domain());
-  //   brushG.call(brush.move, y.range().map(t.invertY, t));
-  // }
-
+    vis.time.scale.domain(t.rescaleY(vis.timeFixed.scale).domain());
+    var [ya, yb] = vis.time.scale.range().map(t.invertY, t);
+    brushG.call(brush.move, [yb, ya]);
+    vis.updatePiano();
+  }
 
 }
 
