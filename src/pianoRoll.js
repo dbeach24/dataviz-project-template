@@ -2,7 +2,7 @@
 const svg = d3.select("svg");
 
 const xAxis = d3.axisBottom()
-   .ticks(0);
+  .ticks(0);
 
 const yAxis = d3.axisLeft()
   .ticks(5)
@@ -19,18 +19,13 @@ const sizeLegend = d3.legendSize()
   .cells([50, 100, 200, 400, 600])
   .labels(['50', '100', '200', '400', '600']);
 
-const zoom = d3.zoom()
-  .scaleExtent([1, 20]);
+export default function (data, vis, margin) {
 
-export default function (props) {
-  const {
-    data,
-    xInfo,
-    yInfo,
-    colorInfo,
-    sizeInfo,
-    margin
-  } = props;
+  const xInfo = vis.longitude;
+  const yInfo = vis.time;
+  const colorInfo = vis.causeColor;
+  const sizeInfo = vis.countSize;
+  const zoom = yInfo.zoom;
 
   xAxis.scale(xInfo.scale);
   yAxis.scale(yInfo.scale);
@@ -76,7 +71,6 @@ export default function (props) {
   const zoomCatcherGEnter = gEnter.append('rect').attr('class', 'zoom-catcher');
   const zoomCatcher = zoomCatcherGEnter
     .merge(g.select('.zoom-catcher'))
-      .attr('transform', `translate(${margin.left}, ${margin.top})`)
       .attr('width', innerWidth)
       .attr('height', innerHeight)
       .call(zoom);
@@ -102,7 +96,7 @@ export default function (props) {
     .merge(yAxisG.select('.axis-label'))
       .attr('x', -innerHeight / 2)
       .attr('transform', `rotate(-90)`)
-      .text(yInfo.label);
+      .text(vis.time.label);
 
   colorLegendGEnter
     .append('text')
@@ -110,7 +104,7 @@ export default function (props) {
       .attr('x', -30)
       .attr('y', -20)
     .merge(colorLegendG.select('legend-label'))
-      .text(colorInfo.label);
+      .text(vis.causeColor.label);
 
   sizeLegendGEnter
     .append('text')
@@ -118,7 +112,7 @@ export default function (props) {
       .attr('x', -30)
       .attr('y', -20)
     .merge(sizeLegendG.select('legend-label'))
-      .text(sizeInfo.label);
+      .text(vis.countSize.label);
 
   xInfo.scale
     .range([0, innerWidth]);
