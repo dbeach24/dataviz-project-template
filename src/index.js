@@ -85,6 +85,11 @@ function row(d) {
 
 d3.csv('data/clean/migrants.csv', row, data => {
 
+  // sort all marks by reverse size so that small marks
+  // appear "on top of" larger ones.
+  const sortValue = vis.countSize.value;
+  data.sort((x,y) => d3.descending(sortValue(x), sortValue(y)));
+
   vis.time.scale.domain(d3.extent(data, vis.time.value));
   vis.timeFixed.scale.domain(d3.extent(data, vis.timeFixed.value));
   vis.countSize.scale.domain(d3.extent(data, vis.countSize.value));

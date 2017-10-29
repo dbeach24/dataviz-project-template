@@ -35,7 +35,7 @@ function drawColorLegend() {
     var info = markerInfo[i];
 
     var bgarea = g.append('rect')
-        .attr('x', -s/2)
+        .attr('x', -s/2 - 10)
         .attr('y', y(i) - s/2 - 5)
         .attr('width', 150)
         .attr('height', s + 10)
@@ -52,7 +52,7 @@ function drawColorLegend() {
         .classed(info.class, true);
 
     var hoverarea = g.append('rect')
-        .attr('x', -s/2)
+        .attr('x', -s/2 - 10)
         .attr('y', y(i) - s/2 - 5)
         .attr('width', 150)
         .attr('height', s + 10)
