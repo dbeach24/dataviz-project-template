@@ -48,8 +48,7 @@ function drawColorLegend() {
         .attr('x', tx)
         .attr('y', y(i) + 10)
         .text(info.label)
-        .classed('legend-value', true)
-        .classed(info.class, true);
+        .classed('legend-value', true);
 
     var hoverarea = g.append('rect')
         .attr('x', -s/2 - 10)
@@ -68,15 +67,13 @@ function addMarkerBehavior(marker, info, bgarea) {
   marker
       .on("mouseover", () => {
         bgarea.attr('fill', '#E0E0E0').attr('opacity', 1.0);
-        svg.selectAll("." + info.class).classed("highlight", true)
-        svg.selectAll(`.highlightable:not(.${info.class})`).classed("greyout", true)
+        svg.selectAll('.highlightable').classed("greyout", true);
+        svg.selectAll("." + info.class).classed("greyout", false).classed("highlight", true);
       })
       .on("mouseout", () => {
         bgarea.attr('fill', null).attr('opacity', 0.0);
-        svg.selectAll("." + info.class).classed("highlight", false)
-        svg.selectAll(`.highlightable:not(.${info.class})`).classed("greyout", false)
-      })
-      ;
+        svg.selectAll(".highlightable").classed("greyout", false).classed("highlight", false);
+      });
 }
 
 
