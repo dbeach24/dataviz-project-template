@@ -152,6 +152,7 @@ function row(d) {
   d.regionId = regionId;
   d.regionName = regionName;
   d.causes = eval(d.causes);
+  d.nationalities = eval(d.nationalities);
   
   return d;
 }
@@ -205,11 +206,11 @@ const yAxis = d3.axisLeft()
   .ticks(5)
   .tickPadding(15);
 
-// const colorLegend = d3.legendColor()
-//   .classPrefix('color')
-//   .shape('circle');
-
 const colorLegendG = svg.append("g");
+
+const tooltip = d3.select("#tooltip");
+
+const formatDate = d3.timeFormat("%e %b %Y");
 
 function drawColorLegend() {
   const g = colorLegendG;
@@ -240,6 +241,7 @@ function drawColorLegend() {
     var marker = info.marker(g, x, y(i), s)
         .classed('legend-icon', true)
         .classed('highlightable', true);
+
     g.append('text')
         .attr('x', tx)
         .attr('y', y(i) + 10)
@@ -316,14 +318,6 @@ const sizeLegend = d3.legendSize()
   const yAxisGEnter = gEnter.append('g').attr('class', 'y-axis');
   const yAxisG = yAxisGEnter.merge(g.select('.y-axis'));
 
-  const marksGEnter = gEnter.append('g').attr('class', 'marksg');
-  const marksG = marksGEnter.merge(g.select('.marksg'));
-
-  // const colorLegendGEnter = gEnter.append('g').attr('class', 'color-legend');
-  // const colorLegendG = colorLegendGEnter
-  //   .merge(g.select('.color-legend'))
-  //     .attr('transform', `translate(${innerWidth + 60}, 50)`);
-
   colorLegendG.attr('transform', `translate(${margin.left + innerWidth + 60}, 50)`);
   drawColorLegend();
 
@@ -338,6 +332,10 @@ const sizeLegend = d3.legendSize()
       .attr('width', innerWidth)
       .attr('height', innerHeight)
       .call(vis.time.zoom);
+
+  const marksGEnter = gEnter.append('g').attr('class', 'marksg');
+  const marksG = marksGEnter.merge(g.select('.marksg'));
+
 
   xAxisGEnter
     .append('text')
@@ -356,14 +354,6 @@ const sizeLegend = d3.legendSize()
       .attr('x', -innerHeight / 2)
       .attr('transform', `rotate(-90)`)
       .text(vis.time.label);
-
-  // colorLegendGEnter
-  //   .append('text')
-  //     .attr('class', 'legend-label')
-  //     .attr('x', -30)
-  //     .attr('y', -20)
-  //   .merge(colorLegendG.select('legend-label'))
-  //     .text(vis.causeColor.label);
 
   sizeLegendGEnter
     .append('text')
@@ -396,16 +386,50 @@ const sizeLegend = d3.legendSize()
         .attr('cx', d => xScale(xInfo.value(d)))
         .attr('cy', d => yScale(yInfo.value(d)))
         .attr('class', d => `mark highlightable ${colorInfo.scale(colorInfo.value(d))}`)
-        .attr('r', d => sizeInfo.scale(sizeInfo.value(d)));
+        .attr('r', d => sizeInfo.scale(sizeInfo.value(d)))
+        .on("mouseover", function(d) {
+          const mark = d3.select(this);
+          const x = xScale(xInfo.value(d)) + margin.left;
+          const y = yScale(yInfo.value(d)) + margin.top;
+          mark
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .style("opacity", "1.0", "important");
+          tooltip
+            .style("left", (x - 150) + "px")
+            .style("top", (y + 30) + "px")
+            .style("opacity", 0.9);
+          d3.select("#tooltip-date").html(formatDate(d.date));
+          d3.select("#tooltip-dead").html(d.dead);
+          d3.select("#tooltip-missing").html(d.missing);
+          d3.select("#tooltip-region").html(d.incident_region);
+          d3.select("#tooltip-cause").html(d.cause_of_death);
+          d3.select("#tooltip-nationality").html(d.nationalities.join(", "));
+          d3.select("#tooltip-origin").html(d.region_origin);
+          d3.select("#tooltip-source").html(d.source);
+          if(d.reliability == "Verified") {
+            d3.select("#tooltip-verified").html("Verified").attr("class", "verified");
+          } else if(d.reliability == "Partially Verified") {
+            d3.select("#tooltip-verified").html("Partially Verified").attr("class", "part-verified");
+          } else {
+            d3.select("#tooltip-verified").html("Unverified").attr("class", "unverified");
+          }
+        })
+        .on("mouseout", function(d) {
+          const mark = d3.select(this);
+          mark
+            .attr("stroke", null)
+            .attr("stroke-width", null)
+            .style("opacity", null);
+          tooltip
+            .style("opacity", 0.0);
+        });
   }
 
   updatePianoRoll();
 
   vis.updatePianoRoll = updatePianoRoll;
 
-  // colorLegendG.call(colorLegend)
-  //   .selectAll('.cell text')
-  //     .attr('dy', '0.05em');
   sizeLegendG.call(sizeLegend)
     .selectAll('.cell text')
       .attr('dy', '0.05em');
