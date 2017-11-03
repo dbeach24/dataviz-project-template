@@ -414,6 +414,16 @@ const sizeLegend = d3.legendSize()
           } else {
             d3.select("#tooltip-verified").html("Unverified").attr("class", "unverified");
           }
+          const icons = d3.select("#tooltip-icons");
+          var xx = 30;
+          d.causes.forEach(cause => {
+            __WEBPACK_IMPORTED_MODULE_0__markers__["a" /* markerInfo */].forEach(info => {
+              if(info.dataLabel == cause) {
+                info.marker(icons, xx, 30, 40);
+                xx += 50;
+              }
+            });
+          });
         })
         .on("mouseout", function(d) {
           const mark = d3.select(this);
@@ -423,6 +433,8 @@ const sizeLegend = d3.legendSize()
             .style("opacity", null);
           tooltip
             .style("opacity", 0.0);
+          const icons = d3.select("#tooltip-icons");
+          icons.selectAll("*").remove();
         });
   }
 
@@ -453,32 +465,38 @@ const markerInfo = [
   {
      label: "Drowning",
      marker: drowning,
-     class: 'drowning'
+     class: 'drowning',
+     dataLabel: "Drowning/Asphyxiation"
   },
   {
      label: "Exposure",
      marker: exposure,
-     class: 'exposure'
+     class: 'exposure',
+     dataLabel: "Exposure"
   },
   {
      label: "Vehicular",
      marker: vehicular,
-     class: 'vehicular'
+     class: 'vehicular',
+     dataLabel: "Vehicular/Mechanical"
   },
   {
      label: "Violence",
      marker: violence,
-     class: 'violence'
+     class: 'violence',
+     dataLabel: "Violence/Homicide"
   },
   {
      label: "Medical",
      marker: medical,
-     class: 'medical'
+     class: 'medical',
+     dataLabel: "Medical/Illness"
   },
   {
      label: "Unknown",
      marker: unknown,
-     class: 'unknown'
+     class: 'unknown',
+     dataLabel: "Unknown"
   },
 
 ];
