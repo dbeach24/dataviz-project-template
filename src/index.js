@@ -79,6 +79,7 @@ function row(d) {
   d.regionId = regionId;
   d.regionName = regionName;
   d.causes = eval(d.causes);
+  d.nationalities = eval(d.nationalities);
   
   return d;
 }

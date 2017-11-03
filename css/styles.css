@@ -41,6 +41,31 @@ body {
   bottom: 0px;
 }
 
+#tooltip {
+  position: absolute;
+  text-align: center;
+  width: 300px;
+  /*height: 150px;*/
+  padding: 10px;
+  font: 12px sans-serif;
+  background: #E0E0E0;
+  border: 5px;
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+.ttheader {
+  font-size: 9pt;
+  font-weight: bold;
+  color: #808080;
+  display: inline-block;
+  width: 50px;
+}
+
+.ttdata {
+  font-size: 11pt;
+}
+
 .drowning { fill: #60B0FF; }
 .exposure { fill: #FFA030; }
 .mechanical { fill: #606060; } 
@@ -70,4 +95,22 @@ body {
 .greyout {
   opacity: 0.3;
   fill: #808080;
+}
+
+.verified {
+  font-size: 10pt;
+  font-weight: bold;
+  color: green;
+}
+
+.part-verified {
+  font-size: 10pt;
+  font-weight: bold;
+  color: orange;
+}
+
+.unverified {
+  font-size: 10pt;
+  font-weight: bold;
+  color: red;
 }

@@ -12,6 +12,54 @@
     <div id="visualization">
       <svg/>
     </div>
+    <div id="tooltip" style="opacity: 0; text-align: left">
+
+      <span id="tooltip-date" style="font-size: 14pt"></span>
+
+      <div style="position: absolute; width: 150px; height: 40px; top: 0px; left: 150px">
+      <table>
+        <tr>
+          <td class="text-align: center">
+            <span id="tooltip-dead" style="font-size: 18pt; color: #a80000"></span><br/>
+            <span class="ttheader">Dead</span>
+          </td>
+          <td class="text-align: center">
+            <span id="tooltip-missing" style="font-size: 18pt; color: #c69f00"></span><br/>
+            <span class="ttheader">Missing</span>
+          </td>
+        </tr>
+      </table>
+      </div>
+
+      <br/><br/>
+
+      <table>
+        <tr>
+          <td class="ttheader">Region</td>
+          <td id="tooltip-region" class="ttdata"></td>
+        </tr>
+        <tr>
+          <td class="ttheader">Cause</td>
+          <td id="tooltip-cause" class="ttdata"></td>
+        </tr>
+        <tr>
+          <td class="ttheader">Natl(s)</td>
+          <td id="tooltip-nationality" class="ttdata"></td>
+        </tr>
+        <tr>
+          <td class="ttheader">Origin</td>
+          <td id="tooltip-origin" class="ttdata"></td>
+        </tr>
+        <tr>
+          <td class="ttheader">Source</td>
+          <td>
+            <span id="tooltip-source" class="ttdata"></span>
+            &nbsp;&nbsp;
+            <span id="tooltip-verified" style="text-align: right"></span>
+          </td>
+        </tr>
+      </table>
+    </div>
     <script src="./dist/bundle.js"></script>
   </body>
 </html>
