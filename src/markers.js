@@ -3,32 +3,38 @@ export const markerInfo = [
   {
      label: "Drowning",
      marker: drowning,
-     class: 'drowning'
+     class: 'drowning',
+     dataLabel: "Drowning/Asphyxiation"
   },
   {
      label: "Exposure",
      marker: exposure,
-     class: 'exposure'
+     class: 'exposure',
+     dataLabel: "Exposure"
   },
   {
      label: "Vehicular",
      marker: vehicular,
-     class: 'vehicular'
+     class: 'vehicular',
+     dataLabel: "Vehicular/Mechanical"
   },
   {
      label: "Violence",
      marker: violence,
-     class: 'violence'
+     class: 'violence',
+     dataLabel: "Violence/Homicide"
   },
   {
      label: "Medical",
      marker: medical,
-     class: 'medical'
+     class: 'medical',
+     dataLabel: "Medical/Illness"
   },
   {
      label: "Unknown",
      marker: unknown,
-     class: 'unknown'
+     class: 'unknown',
+     dataLabel: "Unknown"
   },
 
 ];

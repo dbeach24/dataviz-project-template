@@ -217,6 +217,16 @@ export default function (data, vis, margin) {
           } else {
             d3.select("#tooltip-verified").html("Unverified").attr("class", "unverified");
           }
+          const icons = d3.select("#tooltip-icons");
+          var xx = 30;
+          d.causes.forEach(cause => {
+            markerInfo.forEach(info => {
+              if(info.dataLabel == cause) {
+                info.marker(icons, xx, 30, 40);
+                xx += 50;
+              }
+            });
+          });
         })
         .on("mouseout", function(d) {
           const mark = d3.select(this);
@@ -226,6 +236,8 @@ export default function (data, vis, margin) {
             .style("opacity", null);
           tooltip
             .style("opacity", 0.0);
+          const icons = d3.select("#tooltip-icons");
+          icons.selectAll("*").remove();
         });
   }
 
