@@ -17,13 +17,23 @@ In particular, this project attempts to aid in answering the following questions
 
 ### Stream Graph
 
-
+<img alt="Stream Graph" src="img/streamgraph.png" width="100"/>
 
 ### Bubble Chart
 
-### Cause Legend
+<img alt="Bubble Chart" src="img/bubblechart.png" width="200"/>
+
+### Legends
+
+<img alt="Cause Legend" src="img/cause-legend.png" width="100"/>
+
+<img alt="Cause Hilighting" src="img/hilighting.png" width="400"/>
+
+<img alt="Size Legend" src="img/size-legend.png" width="100"/>
 
 ### Details
+
+<img alt="Details Popup" src="img/details.png" width="200"/>
 
 
 ## About the Data
