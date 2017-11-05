@@ -19,22 +19,57 @@ In particular, this project attempts to aid in answering the following questions
 
 <img alt="Stream Graph" src="img/streamgraph.png" width="100"/>
 
+The stream graph on the left hand size provides an overview of the missing migrant activity.  This graph is computed using the per-month totals of worldwide migrants deaths per cause.  This view is static, but brushing provides a linked brush-and-zoom interaction with the main bubble chart view.
+
 ### Bubble Chart
 
-<img alt="Bubble Chart" src="img/bubblechart.png" width="200"/>
+<img alt="Bubble Chart" src="img/bubblechart.png" width="400"/>
 
-### Legends
+The bubble chart view shows individual migrant death/missing events.  Each event is marked by a circle where:
+
+  * x-axis position = longitude of the event,
+  * y-axis position = time of event,
+  * area = number of migrants affected (dead + missing), and
+  * color = indicates the dominant cause for this event.
+
+You can use the mouse wheel to zoom in around a particular time, and use clicking and dragging to pan through time.  This will update the brushed selection region shown in the stream graph on the left.
+
+From the bubble chart data, you can see that the events cluster into major vertical bands.  From left-to-right, these correspond to:
+
+  * Americas
+  * Eurpoe, Middle East, and Africa, and
+  * Asia Pacific.
+
+### Cause Legend
 
 <img alt="Cause Legend" src="img/cause-legend.png" width="100"/>
 
+The cause legend uses custom icon markers and colors to indicate six major causal categories.  Each icon's color corresponds to the color used in the bubble chart.  Hovering over a category will perform a hilight-by-category interaction, for example:
+
 <img alt="Cause Hilighting" src="img/hilighting.png" width="400"/>
 
+In the above view, the "Drowning" cause has been selected.  This emphasizes the marks related to drowning in both the bubble chart and the stream graph, and deemphasizes all marks corresponding to other causes.  This should provide a "popout" effect for the selected data.
+
+### Size Legend
+
 <img alt="Size Legend" src="img/size-legend.png" width="100"/>
+
+The size legend is a static element which aids in interpreting the size of circles in the bubble chart.
 
 ### Details
 
 <img alt="Details Popup" src="img/details.png" width="200"/>
 
+Hovering over any circle in the bubble chart will cause a details popup to appear.  The details popup gives specific information, including:
+
+  * event date,
+  * number of dead and missing migrants,
+  * all causal categories matched by this event (as icons),
+  * the text location of the event,
+  * a text description of the cause,
+  * the nationalities of the migrants, when known,
+  * the reporting source, and
+  * whether the event is `Verified`, `Partially Verified`, or `Unverified`.
 
 ## About the Data
 
