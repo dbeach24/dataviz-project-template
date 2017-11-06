@@ -1,5 +1,9 @@
 # Missing Migrants Visualization
 
+## [Live Demo](https://dbeach24.github.io/missing-migrants-vis/)
+
+[Click here](https://dbeach24.github.io/missing-migrants-vis/) for a live demo if the visualization.
+
 ## Overview
 
 This project is a visualization of a dataset I originally discovered on [Kaggle](), called [Missing Migrants].  The dataset describes events where migrants have been discovered dead or missing, and aggregated from a combination of media, medical, and governmental reports from around the world.  The nature of this issue and the collection technique means that the information is incomplete, inconsistent, biased, and sometimes messy.  This project is attempt to clean this data and, hopefully, to shine a light on certain aspects of this problem in a way that communicates something of interest to the casual reader.
@@ -12,8 +16,6 @@ In particular, this project attempts to aid in answering the following questions
 * How does cause of death vary by region?
 
 ## Using the visualization
-
-[Click here](https://github.com/dbeach24/missing-migrants-vis) for a live demo.
 
 ### Stream Graph
 
