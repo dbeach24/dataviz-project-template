@@ -1,7 +1,5 @@
 # Missing Migrants Visualization
 
-## [Live Demo](https://dbeach24.github.io/missing-migrants-vis/)
-
 [Click here](https://dbeach24.github.io/missing-migrants-vis/) for a live demo of the visualization.
 
 ## Overview
