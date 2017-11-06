@@ -17,13 +17,13 @@ In particular, this project attempts to aid in answering the following questions
 
 ### Stream Graph
 
-<img alt="Stream Graph" src="img/streamgraph.png" width="100"/>
+<img alt="Stream Graph" src="img/vis/streamgraph.png" width="100"/>
 
 The stream graph on the left hand size provides an overview of the missing migrant activity.  This graph is computed using the per-month totals of worldwide migrants deaths per cause.  This view is static, but brushing provides a linked brush-and-zoom interaction with the main bubble chart view.
 
 ### Bubble Chart
 
-<img alt="Bubble Chart" src="img/bubblechart.png" width="400"/>
+<img alt="Bubble Chart" src="img/vis/bubblechart.png" width="400"/>
 
 The bubble chart view shows individual migrant death/missing events.  Each event is marked by a circle where:
 
@@ -42,23 +42,23 @@ From the bubble chart data, you can see that the events cluster into major verti
 
 ### Cause Legend
 
-<img alt="Cause Legend" src="img/cause-legend.png" width="100"/>
+<img alt="Cause Legend" src="img/vis/cause-legend.png" width="100"/>
 
 The cause legend uses custom icon markers and colors to indicate six major causal categories.  Each icon's color corresponds to the color used in the bubble chart.  Hovering over a category will perform a highlight-by-category interaction, for example:
 
-<img alt="Cause Hilighting" src="img/hilighting.png" width="400"/>
+<img alt="Cause Hilighting" src="img/vis/hilighting.png" width="400"/>
 
 In the above view, the "Drowning" cause has been selected.  This emphasizes the marks related to drowning in both the bubble chart and the stream graph, and deemphasizes all marks corresponding to other causes.  This should provide a "pop-out" effect for the selected data.
 
 ### Size Legend
 
-<img alt="Size Legend" src="img/size-legend.png" width="100"/>
+<img alt="Size Legend" src="img/vis/size-legend.png" width="100"/>
 
 The size legend is a static element which aids in interpreting the size of circles in the bubble chart.
 
 ### Details
 
-<img alt="Details Popup" src="img/details.png" width="200"/>
+<img alt="Details Popup" src="img/vis/details.png" width="200"/>
 
 Hovering over any circle in the bubble chart will cause a details pop-up to appear.  The details pop-up gives specific information, including:
 
@@ -137,7 +137,19 @@ A script (included as a Jupyter/Python notebook is used to extract additional fe
 
 ## Earlier work
 
+### First Prototype
+
 An [earlier example of this work](http://blockbuilder.org/dbeach24/599725c960ce2881b1dcd46c3b20e268) can be found on [bl.ocks.org](https://bl.ocks.org).
+
+### Design Sketches
+
+<img alt="Zooming" src="img/sketch/zooming.png"/>
+
+<img alt="Icons" src="img/sketch/icons.png"/>
+
+<img alt="Verified" src="img/sketch/verified.png"/>
+
+<img alt="Donuts" src="img/sketch/donuts/png"/>
 
 ## Attribution
 
