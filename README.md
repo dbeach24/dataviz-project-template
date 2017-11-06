@@ -2,7 +2,7 @@
 
 ## [Live Demo](https://dbeach24.github.io/missing-migrants-vis/)
 
-[Click here](https://dbeach24.github.io/missing-migrants-vis/) for a live demo if the visualization.
+[Click here](https://dbeach24.github.io/missing-migrants-vis/) for a live demo of the visualization.
 
 ## Overview
 
@@ -69,7 +69,8 @@ Hovering over any circle in the bubble chart will cause a details popup to appea
   * all causal categories matched by this event (as icons),
   * the text location of the event,
   * a text description of the cause,
-  * the nationalities of the migrants, when known,
+  * the nationalities of the migrants (when known),
+  * the region of origin of the migrants (may be different from nationality),
   * the reporting source, and
   * whether the event is `Verified`, `Partially Verified`, or `Unverified`.
 
