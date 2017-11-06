@@ -6,7 +6,7 @@
 
 ## Overview
 
-This project is a visualization of a dataset I originally discovered on [Kaggle](), called [Missing Migrants].  The dataset describes events where migrants have been discovered dead or missing, and aggregated from a combination of media, medical, and governmental reports from around the world.  The nature of this issue and the collection technique means that the information is incomplete, inconsistent, biased, and sometimes messy.  This project is attempt to clean this data and, hopefully, to shine a light on certain aspects of this problem in a way that communicates something of interest to the casual reader.
+This project is a visualization of a dataset I originally discovered on [Kaggle](https://www.kaggle.com/), called [Missing Migrants](https://www.kaggle.com/jmataya/missingmigrants).  The dataset describes events where migrants have been discovered dead or missing, and aggregated from a combination of media, medical, and governmental reports from around the world.  The nature of this issue and the collection technique means that the information is incomplete, inconsistent, biased, and sometimes messy.  This project is attempt to clean this data and, hopefully, to shine a light on certain aspects of this problem in a way that communicates something of interest to the casual reader.
 
 In particular, this project attempts to aid in answering the following questions:
 
@@ -39,18 +39,18 @@ You can use the mouse wheel to zoom in around a particular time, and use clickin
 From the bubble chart data, you can see that the events cluster into major vertical bands.  From left-to-right, these correspond to:
 
   * Americas
-  * Eurpoe, Middle East, and Africa, and
+  * Europe, Middle East, and Africa, and
   * Asia Pacific.
 
 ### Cause Legend
 
 <img alt="Cause Legend" src="img/cause-legend.png" width="100"/>
 
-The cause legend uses custom icon markers and colors to indicate six major causal categories.  Each icon's color corresponds to the color used in the bubble chart.  Hovering over a category will perform a hilight-by-category interaction, for example:
+The cause legend uses custom icon markers and colors to indicate six major causal categories.  Each icon's color corresponds to the color used in the bubble chart.  Hovering over a category will perform a highlight-by-category interaction, for example:
 
 <img alt="Cause Hilighting" src="img/hilighting.png" width="400"/>
 
-In the above view, the "Drowning" cause has been selected.  This emphasizes the marks related to drowning in both the bubble chart and the stream graph, and deemphasizes all marks corresponding to other causes.  This should provide a "popout" effect for the selected data.
+In the above view, the "Drowning" cause has been selected.  This emphasizes the marks related to drowning in both the bubble chart and the stream graph, and deemphasizes all marks corresponding to other causes.  This should provide a "pop-out" effect for the selected data.
 
 ### Size Legend
 
@@ -62,7 +62,7 @@ The size legend is a static element which aids in interpreting the size of circl
 
 <img alt="Details Popup" src="img/details.png" width="200"/>
 
-Hovering over any circle in the bubble chart will cause a details popup to appear.  The details popup gives specific information, including:
+Hovering over any circle in the bubble chart will cause a details pop-up to appear.  The details pop-up gives specific information, including:
 
   * event date,
   * number of dead and missing migrants,
@@ -92,15 +92,15 @@ Yes, there are many small events.  However these events tend to occur in the sam
 
 * What are the different causes of migrant death?
 
-Drowning (especially in the Medetterian) is the \#1 cause of migrant deaths.  All other causes tend to be much smaller.
+Drowning (especially in the Mediterranean) is the \#1 cause of migrant deaths.  All other causes tend to be much smaller.
 
 * How does cause of death vary by region?
 
-In Eurpoe and the Middle East, most deaths are due to drowning.  This is also largely true for the Asia Pacific, but with some noteworthy exceptions.  The data from the Americas tends not to have the cause of death identified, however deaths from all causes can be seen if one looks closely enough.
+In Europe and the Middle East, most deaths are due to drowning.  This is also largely true for the Asia Pacific, but with some noteworthy exceptions.  The data from the Americas tends not to have the cause of death identified, however deaths from all causes can be seen if one looks closely enough.
 
 ## About the Data
 
-This dataset is from the [Missing Migrants](https://www.kaggle.com/jmataya/missingmigrants) data uploaded to Kaggle, and contains information about people who have gone missing while travelling along migration routes.  This data originates from the [Missing Migrants Project](https://missingmigrants.iom.int/).
+This dataset is from the [Missing Migrants](https://www.kaggle.com/jmataya/missingmigrants) data uploaded to Kaggle, and contains information about people who have gone missing while traveling along migration routes.  This data originates from the [Missing Migrants Project](https://missingmigrants.iom.int/).
 
 The original data describe events where migrants have gone missing, and generally answer the following questions:
 
