@@ -74,6 +74,30 @@ Hovering over any circle in the bubble chart will cause a details popup to appea
   * the reporting source, and
   * whether the event is `Verified`, `Partially Verified`, or `Unverified`.
 
+## Some Remarks
+
+The visualization is intended to aid in answer several questions.  Here, I provide my own interpretation of the answers based on developing and using the visualization tool:
+
+* How does the number of missing / dead vary over time and by region?
+
+We can see three primary regions of activity.  In order of significance, these are:
+
+1. Europe, Middle East and Africa,
+2. Americas, and
+3. Asia Pacific.
+
+* Are there certain locations that exhibit many small events which accumulate over time?
+
+Yes, there are many small events.  However these events tend to occur in the same locations as larger events.  In certain parts of the Americas, it appears that there are years where small events were omitted from the data in lieu of an end-of-year summary event.
+
+* What are the different causes of migrant death?
+
+Drowning (especially in the Medetterian) is the \#1 cause of migrant deaths.  All other causes tend to be much smaller.
+
+* How does cause of death vary by region?
+
+In Eurpoe and the Middle East, most deaths are due to drowning.  This is also largely true for the Asia Pacific, but with some noteworthy exceptions.  The data from the Americas tends not to have the cause of death identified, however deaths from all causes can be seen if one looks closely enough.
+
 ## About the Data
 
 This dataset is from the [Missing Migrants](https://www.kaggle.com/jmataya/missingmigrants) data uploaded to Kaggle, and contains information about people who have gone missing while travelling along migration routes.  This data originates from the [Missing Migrants Project](https://missingmigrants.iom.int/).
