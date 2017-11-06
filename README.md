@@ -143,13 +143,13 @@ An [earlier example of this work](http://blockbuilder.org/dbeach24/599725c960ce2
 
 ### Design Sketches
 
-<img alt="Zooming" src="img/sketch/zooming.png"/>
+<img alt="Zooming" src="img/sketch/zooming.png" width="600"/>
 
-<img alt="Icons" src="img/sketch/icons.png"/>
+<img alt="Icons" src="img/sketch/icons.png" width="200" />
 
-<img alt="Verified" src="img/sketch/verified.png"/>
+<img alt="Verified" src="img/sketch/verified.png" width="200"/>
 
-<img alt="Donuts" src="img/sketch/donuts/png"/>
+<img alt="Donuts" src="img/sketch/donuts.png" width="600"/>
 
 ## Attribution
 
