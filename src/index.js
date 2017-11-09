@@ -1,3 +1,4 @@
+import mapAxis from './map'
 import scatterPlot from './pianoRoll'
 import streamGraph from './streamGraph'
 
@@ -48,8 +49,9 @@ const vis = {
   countSummary: countSummaryInfo
 };
 
-const pianoMargin = { left: 260, right: 230, top: 20, bottom: 120 };
-const streamMargin = { left: 100, top: 20, bottom: 120 };
+const mapMargin = { left: 260, right: 230, top: 0, height: 300 };
+const pianoMargin = { left: 260, right: 230, top: 300, bottom: 20 };
+const streamMargin = { left: 100, top: 300, bottom: 20 };
 
 const visualization = d3.select('#visualization');
 const visualizationDiv = visualization.node();
@@ -103,6 +105,7 @@ d3.csv('data/clean/migrants.csv', row, data => {
       .attr('height', visualizationDiv.clientHeight);
 
     // Render the scatter plot.
+    mapAxis(data, vis, mapMargin);
     scatterPlot(data, vis, pianoMargin);
     streamGraph(data, vis, streamMargin);
 

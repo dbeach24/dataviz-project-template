@@ -9,11 +9,14 @@ const yAxis = d3.axisLeft()
   .ticks(5)
   .tickPadding(15);
 
+const sizeLegendG = svg.append("g");
 const colorLegendG = svg.append("g");
 
 const tooltip = d3.select("#tooltip");
 
 const formatDate = d3.timeFormat("%e %b %Y");
+
+const clipRect = d3.select("#pianoClipRect");
 
 function drawColorLegend() {
   const g = colorLegendG;
@@ -103,6 +106,12 @@ export default function (data, vis, margin) {
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
+  clipRect
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", innerWidth)
+    .attr("height", innerHeight);
+
   xAxis.tickSize(-innerHeight);
   yAxis.tickSize(-innerWidth);
 
@@ -121,13 +130,10 @@ export default function (data, vis, margin) {
   const yAxisGEnter = gEnter.append('g').attr('class', 'y-axis');
   const yAxisG = yAxisGEnter.merge(g.select('.y-axis'));
 
-  colorLegendG.attr('transform', `translate(${margin.left + innerWidth + 60}, 50)`);
+  colorLegendG.attr('transform', `translate(${margin.left + innerWidth + 60}, 300)`);
   drawColorLegend();
 
-  const sizeLegendGEnter = gEnter.append('g').attr('class', 'size-legend');
-  const sizeLegendG = sizeLegendGEnter
-    .merge(g.select('.size-legend'))
-      .attr('transform', `translate(${innerWidth + 60}, 450)`);
+  sizeLegendG.attr('transform', `translate(${margin.left + innerWidth + 60}, 60)`);
 
   const zoomCatcherGEnter = gEnter.append('rect').attr('class', 'zoom-catcher');
   const zoomCatcher = zoomCatcherGEnter
@@ -136,7 +142,7 @@ export default function (data, vis, margin) {
       .attr('height', innerHeight)
       .call(vis.time.zoom);
 
-  const marksGEnter = gEnter.append('g').attr('class', 'marksg');
+  const marksGEnter = gEnter.append('g').attr('class', 'marksg').attr('clip-path', "url(#pianoClip)");
   const marksG = marksGEnter.merge(g.select('.marksg'));
 
 
@@ -158,7 +164,7 @@ export default function (data, vis, margin) {
       .attr('transform', `rotate(-90)`)
       .text(vis.time.label);
 
-  sizeLegendGEnter
+  sizeLegendG
     .append('text')
       .attr('class', 'legend-label')
       .attr('x', -30)
@@ -227,6 +233,15 @@ export default function (data, vis, margin) {
               }
             });
           });
+          console.log(`orig coord ${d.lon * Math.PI / 180}, ${d.lat * Math.PI / 180}`);
+          var [cx, cy] = vis.mapProjection([d.lon, d.lat]);
+          console.log(`geo coord ${cx} ${cy}`);
+          vis.mapG.append("circle")
+            .attr("id", "mapmarker")
+            .attr("cx", cx)
+            .attr("cy", cy)
+            .attr("r", 5)
+            .attr("fill", "red");
         })
         .on("mouseout", function(d) {
           const mark = d3.select(this);
@@ -238,6 +253,7 @@ export default function (data, vis, margin) {
             .style("opacity", 0.0);
           const icons = d3.select("#tooltip-icons");
           icons.selectAll("*").remove();
+          d3.select("#mapmarker").remove();
         });
   }
 

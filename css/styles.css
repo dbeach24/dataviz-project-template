@@ -1,6 +1,27 @@
 body {
   margin: 0px;
 }
+
+#logo-the {
+  fill: #8E8883;
+  font-size: 24pt;
+  font-family: palatino;  
+}
+
+#logo-missing {
+  fill: #A00000;
+  font-size: 56pt;
+  font-family: palatino;  
+}
+
+#logo-migrants {
+  fill: #8E8883;
+  font-size: 42pt;
+  font-family: palatino;
+}
+
+
+
 .domain {
   display: none;
 }
@@ -113,4 +134,21 @@ body {
   font-size: 10pt;
   font-weight: bold;
   color: red;
+}
+
+.graticule {
+  fill: none;
+  stroke: #777;
+  stroke-width: 0.5px;
+  stroke-opacity: 0.5;
+}
+
+.land {
+  fill: #c9c9c9;
+}
+
+.boundary {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.5px;
 }
