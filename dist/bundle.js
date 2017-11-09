@@ -69,8 +69,10 @@
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pianoRoll__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__streamGraph__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__map__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pianoRoll__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__streamGraph__ = __webpack_require__(4);
+
 
 
 
@@ -121,8 +123,9 @@ const vis = {
   countSummary: countSummaryInfo
 };
 
-const pianoMargin = { left: 260, right: 230, top: 20, bottom: 120 };
-const streamMargin = { left: 100, top: 20, bottom: 120 };
+const mapMargin = { left: 260, right: 230, top: 0, height: 300 };
+const pianoMargin = { left: 260, right: 230, top: 300, bottom: 20 };
+const streamMargin = { left: 100, top: 300, bottom: 20 };
 
 const visualization = d3.select('#visualization');
 const visualizationDiv = visualization.node();
@@ -176,8 +179,9 @@ d3.csv('data/clean/migrants.csv', row, data => {
       .attr('height', visualizationDiv.clientHeight);
 
     // Render the scatter plot.
-    Object(__WEBPACK_IMPORTED_MODULE_0__pianoRoll__["a" /* default */])(data, vis, pianoMargin);
-    Object(__WEBPACK_IMPORTED_MODULE_1__streamGraph__["a" /* default */])(data, vis, streamMargin);
+    Object(__WEBPACK_IMPORTED_MODULE_0__map__["a" /* default */])(data, vis, mapMargin);
+    Object(__WEBPACK_IMPORTED_MODULE_1__pianoRoll__["a" /* default */])(data, vis, pianoMargin);
+    Object(__WEBPACK_IMPORTED_MODULE_2__streamGraph__["a" /* default */])(data, vis, streamMargin);
 
   }
 
@@ -194,7 +198,68 @@ d3.csv('data/clean/migrants.csv', row, data => {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__markers__ = __webpack_require__(2);
+
+const svg = d3.select("svg");
+
+const mapClipRect = d3.select("#mapClipRect");
+
+const mapG = svg.append("g").attr("clip-path", "url(#mapClip)");
+
+const projection = d3.geoEquirectangular();
+
+const path = d3.geoPath()
+	.projection(projection);
+
+mapG.append("path")
+    .attr("class", "graticule")
+    .attr("d", path);
+
+/* harmony default export */ __webpack_exports__["a"] = (function (data, vis, margin) {
+
+	var width = svg.attr('width') - margin.left - margin.right;
+	var height = margin.height;
+
+	mapG.attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+	mapClipRect
+	    .attr("x", 0)
+	    .attr("y", 0)
+	    .attr("width", width)
+	    .attr("height", height);
+
+	var [lmin, lmax] = vis.longitude.scale.domain();
+
+	projection
+	    //.scale(height / Math.PI)
+	    .scale((width / (2*Math.PI)) / ((lmax-lmin)/360))
+	    .translate([width / 2, height / 2 + 75]);
+
+	d3.json("world-50m.json", function(error, world) {
+	  if (error) throw error;
+
+	  mapG.insert("path", ".graticule")
+	      .datum(topojson.feature(world, world.objects.land))
+	      .attr("class", "land")
+	      .attr("d", path);
+
+	  mapG.insert("path", ".graticule")
+	      .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+	      .attr("class", "boundary")
+	      .attr("d", path);
+	});
+
+	vis.mapG = mapG;
+	vis.mapProjection = projection;
+
+});
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__markers__ = __webpack_require__(3);
 
 
 const svg = d3.select("svg");
@@ -206,11 +271,14 @@ const yAxis = d3.axisLeft()
   .ticks(5)
   .tickPadding(15);
 
+const sizeLegendG = svg.append("g");
 const colorLegendG = svg.append("g");
 
 const tooltip = d3.select("#tooltip");
 
 const formatDate = d3.timeFormat("%e %b %Y");
+
+const clipRect = d3.select("#pianoClipRect");
 
 function drawColorLegend() {
   const g = colorLegendG;
@@ -300,6 +368,12 @@ const sizeLegend = d3.legendSize()
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
+  clipRect
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", innerWidth)
+    .attr("height", innerHeight);
+
   xAxis.tickSize(-innerHeight);
   yAxis.tickSize(-innerWidth);
 
@@ -318,13 +392,10 @@ const sizeLegend = d3.legendSize()
   const yAxisGEnter = gEnter.append('g').attr('class', 'y-axis');
   const yAxisG = yAxisGEnter.merge(g.select('.y-axis'));
 
-  colorLegendG.attr('transform', `translate(${margin.left + innerWidth + 60}, 50)`);
+  colorLegendG.attr('transform', `translate(${margin.left + innerWidth + 60}, 300)`);
   drawColorLegend();
 
-  const sizeLegendGEnter = gEnter.append('g').attr('class', 'size-legend');
-  const sizeLegendG = sizeLegendGEnter
-    .merge(g.select('.size-legend'))
-      .attr('transform', `translate(${innerWidth + 60}, 450)`);
+  sizeLegendG.attr('transform', `translate(${margin.left + innerWidth + 60}, 60)`);
 
   const zoomCatcherGEnter = gEnter.append('rect').attr('class', 'zoom-catcher');
   const zoomCatcher = zoomCatcherGEnter
@@ -333,7 +404,7 @@ const sizeLegend = d3.legendSize()
       .attr('height', innerHeight)
       .call(vis.time.zoom);
 
-  const marksGEnter = gEnter.append('g').attr('class', 'marksg');
+  const marksGEnter = gEnter.append('g').attr('class', 'marksg').attr('clip-path', "url(#pianoClip)");
   const marksG = marksGEnter.merge(g.select('.marksg'));
 
 
@@ -355,7 +426,7 @@ const sizeLegend = d3.legendSize()
       .attr('transform', `rotate(-90)`)
       .text(vis.time.label);
 
-  sizeLegendGEnter
+  sizeLegendG
     .append('text')
       .attr('class', 'legend-label')
       .attr('x', -30)
@@ -424,6 +495,15 @@ const sizeLegend = d3.legendSize()
               }
             });
           });
+          console.log(`orig coord ${d.lon * Math.PI / 180}, ${d.lat * Math.PI / 180}`);
+          var [cx, cy] = vis.mapProjection([d.lon, d.lat]);
+          console.log(`geo coord ${cx} ${cy}`);
+          vis.mapG.append("circle")
+            .attr("id", "mapmarker")
+            .attr("cx", cx)
+            .attr("cy", cy)
+            .attr("r", 5)
+            .attr("fill", "red");
         })
         .on("mouseout", function(d) {
           const mark = d3.select(this);
@@ -435,6 +515,7 @@ const sizeLegend = d3.legendSize()
             .style("opacity", 0.0);
           const icons = d3.select("#tooltip-icons");
           icons.selectAll("*").remove();
+          d3.select("#mapmarker").remove();
         });
   }
 
@@ -450,7 +531,7 @@ const sizeLegend = d3.legendSize()
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -634,7 +715,7 @@ function unknown(parent, cx, cy, s) {
 }
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
