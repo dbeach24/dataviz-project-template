@@ -153,4 +153,8 @@ An [earlier example of this work](http://blockbuilder.org/dbeach24/599725c960ce2
 
 ## Attribution
 
-This D3.js web project is based on [this template project](https://github.com/curran/dataviz-project-template) from [curran](https://github.com/curran).
+This `D3.js` web project is based on [this template project](https://github.com/curran/dataviz-project-template) from [curran](https://github.com/curran).
+
+Elements of the map projection were taken from [Mike Bostock's](https://bl.ocks.org/mbostock) [Equirectangular (Plate Carrée) Block](https://bl.ocks.org/mbostock/3757119).
+
+

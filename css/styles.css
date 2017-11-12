@@ -3,7 +3,7 @@ body {
 }
 
 #logo-the {
-  fill: #8E8883;
+  fill: #BEBEBE;
   font-size: 24pt;
   font-family: palatino;  
 }
@@ -15,7 +15,7 @@ body {
 }
 
 #logo-migrants {
-  fill: #8E8883;
+  fill: #BEBEBE;
   font-size: 42pt;
   font-family: palatino;
 }
@@ -38,8 +38,7 @@ body {
 }
 
 .sizelegendCells circle {
-  fill: #5e5e5e;
-  opacity: 0.5;
+  fill: #D0D0D0;
 }
 
 .axis-label, .legend-label {
@@ -69,8 +68,11 @@ body {
   /*height: 150px;*/
   padding: 10px;
   font: 12px sans-serif;
-  background: #E0E0E0;
-  border: 5px;
+  /*background: #E0E0E0;*/
+  background: #FFFFFF;
+  /*border: #606060;*/
+  border: 3px solid #A0A0A0;
+  /*border: 5px;*/
   border-radius: 20px;
   pointer-events: none;
 }
@@ -89,7 +91,7 @@ body {
 
 .drowning { fill: #60B0FF; }
 .exposure { fill: #FFA030; }
-.mechanical { fill: #606060; } 
+.vehicular { fill: #52227F; } 
 .violence { fill: #A00000; } 
 .medical { fill: #609000; }
 .unknown { fill: #FFA0C0; } /*#d8c6ff*/
@@ -144,11 +146,11 @@ body {
 }
 
 .land {
-  fill: #c9c9c9;
+  fill: #D0D0D0;
 }
 
 .boundary {
   fill: none;
-  stroke: #fff;
+  stroke: #FFFFFF;
   stroke-width: 0.5px;
 }
